@@ -1,0 +1,40 @@
+name: Copart Checker - 3x dziennie
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # 08:00 UTC → 09:00 CET
+    - cron: '0 13 * * *'  # 13:00 UTC → 14:00 CET
+    - cron: '0 19 * * *'  # 19:00 UTC → 20:00 CET
+  workflow_dispatch:      # ręczne uruchomienie z GitHub UI
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install selenium beautifulsoup4 requests undetected-chromedriver
+
+      - name: Run checker
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python Dla_mnie.py
+
+      - name: Commit changes to Dla_mnie.txt (jeśli były nowe ID)
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add Dla_mnie.txt
+          git commit -m "Aktualizacja znanych ID - $(date +'%Y-%m-%d %H:%M')" || echo "Brak zmian do commita"
+          git push
