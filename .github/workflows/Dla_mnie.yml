@@ -1,4 +1,4 @@
-name: Copart Checker - 3x dziennie
+name: Dla_mnie
 
 on:
   schedule:
