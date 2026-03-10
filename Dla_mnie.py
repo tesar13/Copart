@@ -143,9 +143,9 @@ def run_check():
         new_links = [current_data[i] for i in new_ids]
 
         # Przygotuj wiadomość
-        msg = f"<b>Nowe aukcje Copart ({len(new_ids)}):</b>\n\n"
+        msg = f"<b>Nowe aukcje dla Ciebie ({len(new_ids)}):</b>\n\n"
         for link in new_links:
-            msg += f"• {link}\n"
+            msg += f"➜ {link}\n\n"
 
         send_telegram_message(msg)
 
@@ -156,5 +156,6 @@ def run_check():
 
 if __name__ == "__main__":
     run_check()
+
 
 
