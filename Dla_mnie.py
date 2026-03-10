@@ -38,7 +38,7 @@ SEARCH_URL = (
 )
 
 # Telegram
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")   # dodaj w GitHub Secrets
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")   # dodaj w GitHub Secrets
 TELEGRAM_CHAT_ID   = os.getenv("TELEGRAM_CHAT_ID")     # dodaj w GitHub Secrets
 
 # ────────────────────────────────────────────────
@@ -156,3 +156,4 @@ def run_check():
 
 if __name__ == "__main__":
     run_check()
+
