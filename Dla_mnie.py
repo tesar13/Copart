@@ -25,16 +25,38 @@ import re
 KNOWN_IDS_FILE = "Dla_mnie.txt"  # nazwa pliku z dotychczasowymi ID
 
 SEARCH_URL = (
-    "https://www.copart.de/en/vehicleFinderSearch?displayStr=Category:SALVAGE&from=%2FvehicleFinder&fromSource=widget"
-    "&searchCriteria=%7B%22query%22:%5B%22*%22%5D,%22filter%22:%7B%22MISC%22:%5B%22-damage_type_code:(MN%20OR%20NW)%22%5D,"
-    "%22MAKE%22:%5B%22lot_make_desc:%5C%22Audi%5C%22%22,%22lot_make_desc:%5C%22BMW%5C%22%22,%22lot_make_desc:%5C%22Kia%5C%22%22,"
-    "%22lot_make_desc:%5C%22Hyundai%5C%22%22,%22lot_make_desc:%5C%22Skoda%5C%22%22,%22lot_make_desc:%5C%22Cupra%5C%22%22%5D,"
-    "%22FUEL%22:%5B%22fuel_type_desc:%5C%22Diesel%5C%22%22,%22fuel_type_desc:%5C%22Petrol%5C%22%22,%22fuel_type_desc:%5C%22Hybrid%20Gasoline%5C%22%22,"
-    "%22fuel_type_desc:%5C%22Hybrid%20Diesel%5C%22%22,%22fuel_type_desc:%5C%22Hybrid%20Engine%5C%22%22%5D,%22TNM%22:%5B%22transmission_type_desc:%5C%22Automatic%5C%22%22%5D,"
-    "%22BODY%22:%5B%22body_style:%5C%22Limousine%5C%22%22,%22body_style:%5C%22Lim.%20Schr%C3%A4gheck%5C%22%22,%22body_style:%5C%22Kombi%2Fcoup%C3%A9%5C%22%22,"
-    "%22body_style:%5C%22Kombi%5C%22%22,%22body_style:%5C%22Coup%C3%A9%5C%22%22,%22body_style:%5C%22Coupe%5C%22%22,%22body_style:%5C%22Schr%C3%A4ghecklimousine%5C%22%22%5D,"
-    "%22YEAR%22:%5B%22lot_year:%5B2016%20TO%202024%5D%22%5D,%22ODM%22:%5B%22odometer_reading_received:%5B0%20TO%20160500%5D%22%5D%7D,%22searchName%22:%22%22,"
-    "%22watchListOnly%22:false,%22freeFormSearch%22:false%7D"
+    "https://www.copart.de/en/vehicleFinderSearch?"
+    "displayStr=Category:SALVAGE&"
+    "from=%2FvehicleFinder&"
+    "fromSource=widget&"
+    "searchCriteria=%7B"
+        "%22query%22:%5B%22*%22%5D,"
+        "%22filter%22:%7B"
+            "%22MISC%22:%5B%22-damage_type_code:(MN%20OR%20NW)%22%5D,"
+            "%22MAKE%22:%5B"
+                "%22lot_make_desc:%5C%22Audi%5C%22%22,"
+                "%22lot_make_desc:%5C%22BMW%5C%22%22,"
+                "%22lot_make_desc:%5C%22Cupra%5C%22%22,"
+                "%22lot_make_desc:%5C%22Kia%5C%22%22,"
+                "%22lot_make_desc:%5C%22Skoda%5C%22%22"
+            "%5D,"
+            "%22TNM%22:%5B%22transmission_type_desc:%5C%22Automatic%5C%22%22%5D,"
+            "%22BODY%22:%5B"
+                "%22body_style:%5C%22Coupe%5C%22%22,"
+                "%22body_style:%5C%22Coup%C3%A9%5C%22%22,"
+                "%22body_style:%5C%22Kombi%5C%22%22,"
+                "%22body_style:%5C%22Kombi%2Fcoup%C3%A9%5C%22%22,"
+                "%22body_style:%5C%22Lim.%20Schr%C3%A4gheck%5C%22%22,"
+                "%22body_style:%5C%22Limousine%5C%22%22,"
+                "%22body_style:%5C%22Schr%C3%A4ghecklimousine%5C%22%22"
+            "%5D,"
+            "%22ODM%22:%5B%22odometer_reading_received:%5B0%20TO%20160500%5D%22%5D,"
+            "%22YEAR%22:%5B%22lot_year:%5B2016%20TO%202023%5D%22%5D"
+        "%7D,"
+        "%22searchName%22:%22%22,"
+        "%22watchListOnly%22:false,"
+        "%22freeFormSearch%22:false"
+    "%7D"
 )
 
 # Telegram
@@ -156,6 +178,7 @@ def run_check():
 
 if __name__ == "__main__":
     run_check()
+
 
 
 
