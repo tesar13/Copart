@@ -44,11 +44,11 @@ TELEGRAM_CHAT_ID   = os.getenv("TELEGRAM_CHAT_ID")     # dodaj w GitHub Secrets
 # ────────────────────────────────────────────────
 
 def send_telegram_message(message):
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        print("Brak TELEGRAM_BOT_TOKEN lub TELEGRAM_CHAT_ID – pomijam wysyłkę")
+    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
+        print("Brak TELEGRAM_TOKEN lub TELEGRAM_CHAT_ID – pomijam wysyłkę")
         return
 
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     payload = {
         "chat_id": TELEGRAM_CHAT_ID,
         "text": message,
@@ -156,4 +156,5 @@ def run_check():
 
 if __name__ == "__main__":
     run_check()
+
 
