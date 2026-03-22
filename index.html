@@ -216,7 +216,8 @@ function calc() {
   resultBox.classList.remove("show");
   resultBox.innerText = "";
 
-  fetch("https://script.google.com/macros/s/AKfycbxJKS0gKEI_Yn4ACtBUZU_OCTs2seJWVfgt8eUesCIavysAMGN9uZDDfi1WgnIngzM/exec", {
+  // 🔥 NOWE API (Apps Script)
+  fetch("https://script.google.com/macros/s/AKfycbyDz8ZocaedN-HK4R_pk5gkmM4E98x94jMz4eGxThWuoYgB5Id2NCbr8UzrkNXEfzDP/exec", {
     method: "POST",
     body: JSON.stringify({
       price: Number(price),
@@ -229,9 +230,15 @@ function calc() {
   .then(data => {
     resultBox.innerText = data.result;
     resultBox.classList.add("show");
-  
+
     document.getElementById('note').style.display = "block";
-  
+
+    resultBox.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    // 🔥 STOP LOADING
     btn.classList.remove("loading");
     btn.disabled = false;
   })
@@ -239,6 +246,7 @@ function calc() {
     btn.classList.remove("loading");
     btn.disabled = false;
   });
+}
 
 // 🔥 usuwa czerwone pole przy wpisywaniu
 document.getElementById('price').addEventListener('input', function() {
