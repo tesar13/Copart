@@ -216,28 +216,29 @@ function calc() {
   resultBox.classList.remove("show");
   resultBox.innerText = "";
 
-  google.script.run
-    .withSuccessHandler(function(res) {
-      resultBox.innerText = res;
-      resultBox.classList.add("show");
-
-      document.getElementById('note').style.display = "block";
-
-      resultBox.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-
-      // 🔥 STOP LOADING
-      btn.classList.remove("loading");
-      btn.disabled = false;
+  fetch("https://script.google.com/macros/s/AKfycbxJKS0gKEI_Yn4ACtBUZU_OCTs2seJWVfgt8eUesCIavysAMGN9uZDDfi1WgnIngzM/exec", {
+    method: "POST",
+    body: JSON.stringify({
+      price: Number(price),
+      hybrid: hybrid,
+      engine: engine,
+      vat: vat
     })
-    .withFailureHandler(function() {
-      btn.classList.remove("loading");
-      btn.disabled = false;
-    })
-    .calculate(Number(price), hybrid, engine, vat);
-}
+  })
+  .then(res => res.json())
+  .then(data => {
+    resultBox.innerText = data.result;
+    resultBox.classList.add("show");
+  
+    document.getElementById('note').style.display = "block";
+  
+    btn.classList.remove("loading");
+    btn.disabled = false;
+  })
+  .catch(() => {
+    btn.classList.remove("loading");
+    btn.disabled = false;
+  });
 
 // 🔥 usuwa czerwone pole przy wpisywaniu
 document.getElementById('price').addEventListener('input', function() {
