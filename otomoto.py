@@ -1,3 +1,5 @@
+# scraper.py
+
 import requests
 from bs4 import BeautifulSoup
 import time
@@ -8,10 +10,10 @@ BASE_URL = "https://www.otomoto.pl/osobowe/audi--cupra--kia--skoda/seg-combi--se
 
 SESSION = requests.Session()
 
-MAX_PAGES = 10
+MAX_PAGES = 5  # 🔴 wystarczy mało — nowe ogłoszenia są na początku
 
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+BOT_TOKEN = os.getenv("TELEGRAM_TOKEN")
+CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
@@ -28,25 +30,30 @@ def rotate_headers():
 
 
 def send_telegram(msg):
-    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    requests.post(url, data={"chat_id": TELEGRAM_CHAT_ID, "text": msg})
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    try:
+        requests.post(url, data={"chat_id": CHAT_ID, "text": msg}, timeout=10)
+    except Exception as e:
+        print(f"Telegram error: {e}")
 
 
-def load_ids():
+def load_known_ids():
     if not os.path.exists("otomoto.txt"):
         return set()
-    with open("otomoto.txt") as f:
+
+    with open("otomoto.txt", "r") as f:
         return set(line.strip() for line in f)
 
 
-def save_ids(ids):
-    with open("otomoto.txt", "a") as f:
-        for i in ids:
+def save_ids(all_ids):
+    with open("otomoto.txt", "w") as f:
+        for i in all_ids:
             f.write(i + "\n")
 
 
 def scrape():
-    known = load_ids()
+    known_ids = load_known_ids()
+    scraped_ids = set()
     new_ids = []
 
     for page in range(1, MAX_PAGES + 1):
@@ -54,15 +61,22 @@ def scrape():
         rotate_headers()
 
         url = BASE_URL + f"&page={page}"
-        r = SESSION.get(url, timeout=30)
+
+        try:
+            r = SESSION.get(url, timeout=30)
+            if r.status_code != 200:
+                print(f"HTTP {r.status_code}")
+                break
+        except Exception as e:
+            print(f"Błąd: {e}")
+            break
 
         soup = BeautifulSoup(r.text, "html.parser")
         offers = soup.select("article[data-id]")
 
         if not offers:
+            print("Brak ofert → STOP")
             break
-
-        stop = False
 
         for offer in offers:
             ad_id = offer.get("data-id")
@@ -71,29 +85,26 @@ def scrape():
             if not ad_id or not link_tag:
                 continue
 
-            if ad_id in known:
-                stop = True
-                break
+            scraped_ids.add(ad_id)
 
-            link = link_tag["href"]
-            if not link.startswith("http"):
-                link = "https://www.otomoto.pl" + link
+            if ad_id not in known_ids:
+                link = link_tag["href"]
+                if not link.startswith("http"):
+                    link = "https://www.otomoto.pl" + link
 
-            print("NOWE:", link)
-            send_telegram(link)
+                print("NOWE:", link)
+                send_telegram(link)
 
-            new_ids.append(ad_id)
-
-        if stop:
-            print("STOP: znaleziono znane ID")
-            break
+                new_ids.append(ad_id)
 
         time.sleep(random.uniform(1.5, 3))
 
-    if new_ids:
-        save_ids(new_ids)
+    # 🔴 zapisujemy pełną aktualną bazę (nie tylko nowe!)
+    all_ids = known_ids.union(scraped_ids)
+    save_ids(all_ids)
 
-    print(f"✅ Nowe: {len(new_ids)}")
+    print(f"✅ Nowe ogłoszenia: {len(new_ids)}")
+    print(f"📊 Łącznie ID w bazie: {len(all_ids)}")
 
 
 if __name__ == "__main__":
