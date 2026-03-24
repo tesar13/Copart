@@ -1,0 +1,38 @@
+name: Otomoto
+
+on:
+  schedule:
+    - cron: "*/60 * * * *"  # co 10 minut
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install selenium beautifulsoup4 requests undetected-chromedriver
+
+      - name: Run scraper
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python otomoto.py
+
+      - name: Commit updated IDs
+        run: |
+          git config --global user.name "bot"
+          git config --global user.email "bot@github.com"
+          git add otomoto.txt
+          git commit -m "update ids" || echo "no changes"
+          git push
