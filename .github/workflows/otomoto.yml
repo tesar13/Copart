@@ -2,7 +2,7 @@ name: Otomoto
 
 on:
   schedule:
-    - cron: "*/60 * * * *"  # co 10 minut
+    - cron: '0 8-22 * * *' 
   workflow_dispatch:
 
 jobs:
