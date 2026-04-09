@@ -64,7 +64,7 @@ def check_tickets():
         html = page.content().lower()
         size = len(html)
         
-        has_selectday = "soldout_day" in html #fragment HTML do wyszukania zmień tutaj tylko
+        has_selectday = "selectDay" in html #fragment HTML do wyszukania zmień tutaj tylko
 
         print(f"Rozmiar HTML: {size:,} bajtów")
         print(f"selectday znaleziony: {has_selectday}")
