@@ -2,7 +2,8 @@ name: Otomoto
 
 on:
   schedule:
-    - cron: '0 8-22 * * *'      # co godzinę od 8:00 do 22:00 UTC
+    - cron: '0 8 * * *'  # → 11:00 CET
+    - cron: '0 17 * * *'  # → 20:00 CET      # co godzinę od 8:00 do 22:00 UTC
   workflow_dispatch:
 
 jobs:
