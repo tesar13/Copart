@@ -63,17 +63,13 @@ def check_tickets():
 
         html = page.content().lower()
         size = len(html)
-
-        soldout_count = html.count("soldout_day")
+        
         has_selectday = "selectday" in html
-        has_selectable = "selectable" in html
-        has_calendar = "ui-datepicker" in html
 
         print(f"Rozmiar HTML: {size:,} bajtów")
-        print(f"soldout_day count: {soldout_count}")
-        print(f"selectday: {has_selectday} | selectable: {has_selectable} | calendar: {has_calendar}")
+        print(f"selectday znaleziony: {has_selectday}")
 
-        if size > 100000 and (has_selectday or has_selectable or (has_calendar and soldout_count < 25)):
+        if size > 80000 and has_selectday:
             print(f"[{datetime.now()}] ✅ ZNALEZIONO WOLNE BILETY!")
 
             token = os.getenv("TELEGRAM_TOKEN")
