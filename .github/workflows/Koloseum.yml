@@ -1,9 +1,9 @@
 name: Koloseum
 
 on:
-    schedule:
-    - cron: '*/10 * * * *'     # co 20 minut
-    workflow_dispatch:      # ręczne uruchomienie z GitHub UI
+  schedule:
+    - cron: '*/10 * * * *'     
+  workflow_dispatch:      # ręczne uruchomienie z GitHub UI
 
 jobs:
   check:
