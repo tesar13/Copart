@@ -2,8 +2,8 @@ name: Quattro
 
 on:
   schedule:
-    - cron: '0 9 * * *'  # → 11:00 CET
-    - cron: '0 18 * * *'  # → 20:00 CET
+    #- cron: '0 9 * * *'  # → 11:00 CET
+    #- cron: '0 18 * * *'  # → 20:00 CET
   workflow_dispatch:      # ręczne uruchomienie z GitHub UI
 
 jobs:
