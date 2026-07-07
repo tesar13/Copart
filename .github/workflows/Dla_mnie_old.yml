@@ -2,8 +2,8 @@ name: Dla_mnie_old
 
 on:
   schedule:
-    - cron: '0 10 * * *'  # → 11:00 CET
-    - cron: '0 19 * * *'  # → 20:00 CET
+    #- cron: '0 10 * * *'  # → 11:00 CET
+    #- cron: '0 19 * * *'  # → 20:00 CET
   workflow_dispatch:      # ręczne uruchomienie z GitHub UI
 
 jobs:
